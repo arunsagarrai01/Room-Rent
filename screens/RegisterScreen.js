@@ -11,17 +11,25 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useWindowDimensions } from 'react-native';
 
 export default function RegisterScreen({ navigation }) {
+  const { width } = useWindowDimensions();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [gender, setGender] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
 
   const handleRegister = () => {
     // TODO: Implement registration logic
+    // When sending registration data to backend, include gender and contactNumber:
+    // Example:
+    // const registrationData = { name, email, password, gender, contactNumber };
+    // await api.register(registrationData);
     navigation.replace('MainTabs');
   };
 
@@ -30,18 +38,20 @@ export default function RegisterScreen({ navigation }) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView contentContainerStyle={[styles.scrollContainer, { padding: width < 400 ? 10 : 20 }]}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.logoContainer}>
           <Image
             source={require('../assets/logo.jpg')}
-            style={styles.logo}
+            style={[styles.logo, { width: width * 0.3, height: width * 0.3, borderRadius: (width * 0.3) / 2 }]}
             resizeMode="cover"
           />
-          <Text style={styles.welcomeText}>Create Account</Text>
-          <Text style={styles.subtitleText}>Sign up to get started</Text>
+          <Text style={[styles.welcomeText, { fontSize: width < 400 ? 22 : 28 }]}>Create Account</Text>
+          <Text style={[styles.subtitleText, { fontSize: width < 400 ? 13 : 16 }]}>Sign up to get started</Text>
         </View>
 
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { width: '100%' }]}>
           <View style={styles.inputWrapper}>
             <Ionicons name="person-outline" size={24} color="#666" style={styles.inputIcon} />
             <TextInput
@@ -65,6 +75,82 @@ export default function RegisterScreen({ navigation }) {
               keyboardType="email-address"
               autoCapitalize="none"
             />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Ionicons name="call-outline" size={24} color="#666" style={styles.inputIcon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Contact Number"
+              placeholderTextColor="#666"
+              value={contactNumber}
+              onChangeText={setContactNumber}
+              keyboardType="phone-pad"
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={{ marginBottom: 15, paddingLeft: 10, backgroundColor: '#f3f3f3', borderRadius: 10, paddingVertical: 10 }}>
+            <Text style={{ fontSize: 16, color: '#666', marginBottom: 8 }}>Gender</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginRight: 24 }}
+                onPress={() => setGender('male')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: gender === 'male' ? '#000' : '#aaa',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: '#fff',
+                }}>
+                  {gender === 'male' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
+                </View>
+                <Text style={{ color: '#222', fontSize: 15 }}>Male</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center', marginRight: 24 }}
+                onPress={() => setGender('female')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: gender === 'female' ? '#000' : '#aaa',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: '#fff',
+                }}>
+                  {gender === 'female' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
+                </View>
+                <Text style={{ color: '#222', fontSize: 15 }}>Female</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => setGender('other')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: gender === 'other' ? '#000' : '#aaa',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: '#fff',
+                }}>
+                  {gender === 'other' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
+                </View>
+                <Text style={{ color: '#222', fontSize: 15 }}>Other</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.inputWrapper}>
@@ -139,34 +225,29 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    padding: 20,
+    // padding is now dynamic in component
   },
   logoContainer: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 30,
   },
   logo: {
-    width: 120,
-    height: 120,
+    // width, height, borderRadius are now dynamic in component
     marginBottom: 20,
-    borderRadius: 60,
     backgroundColor: '#fff',
     borderWidth: 2,
     borderColor: '#000',
     resizeMode: 'cover'
   },
   welcomeText: {
-    fontSize: 28,
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 10,
   },
   subtitleText: {
-    fontSize: 16,
     color: '#666',
   },
   inputContainer: {
-    width: '100%',
     marginBottom: 20,
   },
   inputWrapper: {
@@ -176,31 +257,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 12,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     backgroundColor: '#f8f8f8',
   },
   inputIcon: {
-    marginRight: 10,
+    marginRight: 8,
   },
   input: {
     flex: 1,
-    height: 50,
+    height: 44,
     color: '#000',
-    fontSize: 16,
+    fontSize: 14,
   },
   eyeIcon: {
     padding: 10,
   },
   registerButton: {
     backgroundColor: '#000',
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderRadius: 12,
     alignItems: 'center',
     marginBottom: 20,
   },
   registerButtonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: 'bold',
   },
   orContainer: {
@@ -215,8 +296,8 @@ const styles = StyleSheet.create({
   },
   orText: {
     color: '#666',
-    paddingHorizontal: 10,
-    fontSize: 16,
+    paddingHorizontal: 8,
+    fontSize: 13,
   },
   socialContainer: {
     flexDirection: 'row',
@@ -224,13 +305,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   socialButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#f8f8f8',
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginHorizontal: 6,
     borderWidth: 1,
     borderColor: '#ddd',
   },
@@ -241,11 +322,11 @@ const styles = StyleSheet.create({
   },
   loginText: {
     color: '#666',
-    fontSize: 16,
+    fontSize: 13,
   },
   loginLink: {
     color: '#000',
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
   },
 }); 

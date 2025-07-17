@@ -16,6 +16,7 @@ export default function LandlordRegisterScreen({ navigation }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -68,6 +69,68 @@ export default function LandlordRegisterScreen({ navigation }) {
               onChangeText={setPhone}
               keyboardType="phone-pad"
             />
+          </View>
+          <View style={{ marginBottom: 15, marginLeft: 16, backgroundColor: '#f3f3f3', borderRadius: 10, padding: 10 }}>
+            <Text style={{ fontSize: 16, color: '#666', marginBottom: 8 }}>Gender</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => setGender('male')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: '#666',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: gender === 'male' ? '#2E8B57' : '#fff',
+                }}>
+                  {gender === 'male' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#fff' }} />}
+                </View>
+                <Text style={{ color: '#666' }}>Male</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => setGender('female')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: '#666',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: gender === 'female' ? '#2E8B57' : '#fff',
+                }}>
+                  {gender === 'female' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#fff' }} />}
+                </View>
+                <Text style={{ color: '#666' }}>Female</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', alignItems: 'center' }}
+                onPress={() => setGender('other')}
+              >
+                <View style={{
+                  height: 20,
+                  width: 20,
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: '#666',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 6,
+                  backgroundColor: gender === 'other' ? '#2E8B57' : '#fff',
+                }}>
+                  {gender === 'other' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#fff' }} />}
+                </View>
+                <Text style={{ color: '#666' }}>Other</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.inputWrapper}>
             <Ionicons name="lock-closed-outline" size={24} color="#666" style={styles.inputIcon} />
