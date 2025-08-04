@@ -210,6 +210,7 @@ function ProfileTab({ navigation }) {
   const [newStory, setNewStory] = useState('');
   const [editName, setEditName] = useState(profile.name);
   const [editEmail, setEditEmail] = useState(profile.email);
+  const [editPhone, setEditPhone] = useState('');
 
   const handlePostStory = () => {
     if (newStory.trim() === '') return;
@@ -219,7 +220,7 @@ function ProfileTab({ navigation }) {
   };
 
   const handleEditProfile = () => {
-    setProfile(prev => ({ ...prev, name: editName, email: editEmail }));
+    setProfile(prev => ({ ...prev, name: editName, email: editEmail, phone: editPhone }));
     setEditModalVisible(false);
   };
 
@@ -318,6 +319,13 @@ function ProfileTab({ navigation }) {
               value={editEmail}
               onChangeText={setEditEmail}
               keyboardType="email-address"
+            />
+            <TextInput
+              style={styles.modalInput}
+              placeholder="Phone Number"
+              value={editPhone}
+              onChangeText={setEditPhone}
+              keyboardType="phone-pad"
             />
             <TouchableOpacity style={styles.modalButton} onPress={handleEditProfile}>
               <Text style={styles.modalButtonText}>Save</Text>
