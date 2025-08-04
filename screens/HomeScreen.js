@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Animated } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Animated, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function HomeScreen({ navigation, route }) {
@@ -23,21 +23,38 @@ export default function HomeScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+      
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <Text style={styles.greeting}>Hello, Welcome!</Text>
+          <Text style={styles.subtitle}>Find your perfect room</Text>
+        </View>
+        <TouchableOpacity style={styles.profileButton}>
+          <Ionicons name="person-circle" size={32} color="#4A90E2" />
+        </TouchableOpacity>
+      </View>
+
       <Animated.View style={[styles.searchContainer, { height: searchBoxHeight }]}>
         <View style={styles.searchBar}>
-          <Ionicons name="search" size={20} color="#666" style={styles.searchIcon} />
+          <Ionicons name="search" size={20} color="#8E8E93" style={styles.searchIcon} />
           <TextInput 
-            placeholder="Where to?"
-            placeholderTextColor="#666"
+            placeholder="Search for rooms, apartments..."
+            placeholderTextColor="#8E8E93"
             style={styles.searchInput}
             value={searchQuery}
             onChangeText={setSearchQuery}
           />
+          <TouchableOpacity style={styles.filterButton}>
+            <Ionicons name="options" size={20} color="#4A90E2" />
+          </TouchableOpacity>
         </View>
       </Animated.View>
 
       {/* Categories */}
       <View style={[styles.categoriesContainer, isSearchVisible && styles.categoriesWithSearch]}>
+        <Text style={styles.categoriesTitle}>What are you looking for?</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categories}>
           <TouchableOpacity 
             style={styles.categoryItem}
@@ -46,8 +63,8 @@ export default function HomeScreen({ navigation, route }) {
               title: 'Available Rooms'
             })}
           >
-            <View style={styles.categoryIcon}>
-              <Ionicons name="home" size={30} color="#fff" />
+            <View style={[styles.categoryIcon, { backgroundColor: '#4A90E2' }]}>
+              <Ionicons name="home" size={28} color="#fff" />
             </View>
             <Text style={styles.categoryText}>Rooms</Text>
           </TouchableOpacity>
@@ -58,8 +75,8 @@ export default function HomeScreen({ navigation, route }) {
               title: 'Available Apartments'
             })}
           >
-            <View style={styles.categoryIcon}>
-              <Ionicons name="bed" size={30} color="#fff" />
+            <View style={[styles.categoryIcon, { backgroundColor: '#50C878' }]}>
+              <Ionicons name="bed" size={28} color="#fff" />
             </View>
             <Text style={styles.categoryText}>Apartments</Text>
           </TouchableOpacity>
@@ -70,22 +87,21 @@ export default function HomeScreen({ navigation, route }) {
               title: 'Available Hotels'
             })}
           >
-            <View style={styles.categoryIcon}>
-              <Ionicons name="business" size={30} color="#fff" />
+            <View style={[styles.categoryIcon, { backgroundColor: '#FF6B35' }]}>
+              <Ionicons name="business" size={28} color="#fff" />
             </View>
             <Text style={styles.categoryText}>Hotels</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             style={styles.categoryItem}
             onPress={() => {
-              // You might want to request location permission here
               navigation.navigate('NearMe', {
                 title: 'Places Near Me'
               });
             }}
           >
-            <View style={styles.categoryIcon}>
-              <Ionicons name="map" size={30} color="#fff" />
+            <View style={[styles.categoryIcon, { backgroundColor: '#9B59B6' }]}>
+              <Ionicons name="location" size={28} color="#fff" />
             </View>
             <Text style={styles.categoryText}>Near me</Text>
           </TouchableOpacity>
@@ -93,8 +109,13 @@ export default function HomeScreen({ navigation, route }) {
       </View>
 
       {/* Featured Listings */}
-      <ScrollView style={styles.listings}>
-        <Text style={styles.sectionTitle}>Featured Rooms</Text>
+      <ScrollView style={styles.listings} showsVerticalScrollIndicator={false}>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Featured Rooms</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeAllText}>See All</Text>
+          </TouchableOpacity>
+        </View>
         
         <TouchableOpacity 
           style={styles.listingCard}
@@ -109,18 +130,39 @@ export default function HomeScreen({ navigation, route }) {
             }
           })}
         >
-          <Image 
-            source={{ uri: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af' }}
-            style={styles.listingImage}
-          />
+          <View style={styles.imageContainer}>
+            <Image 
+              source={{ uri: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af' }}
+              style={styles.listingImage}
+            />
+            <View style={styles.priceTag}>
+              <Text style={styles.priceText}>₹1,500</Text>
+            </View>
+            <TouchableOpacity style={styles.favoriteButton}>
+              <Ionicons name="heart-outline" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.listingDetails}>
             <Text style={styles.listingTitle}>Modern Room in Downtown</Text>
-            <Text style={styles.listingLocation}>New York, United States</Text>
+            <View style={styles.locationContainer}>
+              <Ionicons name="location-outline" size={14} color="#8E8E93" />
+              <Text style={styles.listingLocation}>New York, United States</Text>
+            </View>
             <View style={styles.listingFooter}>
-              <Text style={[styles.listingPrice, { color: '#2E8B57' }]}>रु1500</Text>
               <View style={styles.ratingContainer}>
-                <Ionicons name="star" size={16} color="#FFD700" />
+                <Ionicons name="star" size={14} color="#FFD700" />
                 <Text style={styles.ratingText}>4.8</Text>
+                <Text style={styles.reviewCount}>(24 reviews)</Text>
+              </View>
+              <View style={styles.amenitiesContainer}>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="wifi" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>WiFi</Text>
+                </View>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="car" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>Parking</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -139,18 +181,39 @@ export default function HomeScreen({ navigation, route }) {
             }
           })}
         >
-          <Image 
-            source={{ uri: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' }}
-            style={styles.listingImage}
-          />
+          <View style={styles.imageContainer}>
+            <Image 
+              source={{ uri: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267' }}
+              style={styles.listingImage}
+            />
+            <View style={styles.priceTag}>
+              <Text style={styles.priceText}>₹2,600</Text>
+            </View>
+            <TouchableOpacity style={styles.favoriteButton}>
+              <Ionicons name="heart-outline" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.listingDetails}>
             <Text style={styles.listingTitle}>Cozy Studio Apartment</Text>
-            <Text style={styles.listingLocation}>London, United Kingdom</Text>
+            <View style={styles.locationContainer}>
+              <Ionicons name="location-outline" size={14} color="#8E8E93" />
+              <Text style={styles.listingLocation}>London, United Kingdom</Text>
+            </View>
             <View style={styles.listingFooter}>
-              <Text style={[styles.listingPrice, { color: '#2E8B57' }]}>रु2600</Text>
               <View style={styles.ratingContainer}>
-                <Ionicons name="star" size={16} color="#FFD700" />
+                <Ionicons name="star" size={14} color="#FFD700" />
                 <Text style={styles.ratingText}>4.6</Text>
+                <Text style={styles.reviewCount}>(18 reviews)</Text>
+              </View>
+              <View style={styles.amenitiesContainer}>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="wifi" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>WiFi</Text>
+                </View>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="restaurant" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>Kitchen</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -169,18 +232,39 @@ export default function HomeScreen({ navigation, route }) {
             }
           })}
         >
-          <Image 
-            source={{ uri: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd' }}
-            style={styles.listingImage}
-          />
+          <View style={styles.imageContainer}>
+            <Image 
+              source={{ uri: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd' }}
+              style={styles.listingImage}
+            />
+            <View style={styles.priceTag}>
+              <Text style={styles.priceText}>₹5,000</Text>
+            </View>
+            <TouchableOpacity style={styles.favoriteButton}>
+              <Ionicons name="heart-outline" size={20} color="#fff" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.listingDetails}>
             <Text style={styles.listingTitle}>Luxury Penthouse</Text>
-            <Text style={styles.listingLocation}>Kathmandu, Nepal</Text>
+            <View style={styles.locationContainer}>
+              <Ionicons name="location-outline" size={14} color="#8E8E93" />
+              <Text style={styles.listingLocation}>Kathmandu, Nepal</Text>
+            </View>
             <View style={styles.listingFooter}>
-              <Text style={[styles.listingPrice, { color: '#2E8B57' }]}>रु5000</Text>
               <View style={styles.ratingContainer}>
-                <Ionicons name="star" size={16} color="#FFD700" />
+                <Ionicons name="star" size={14} color="#FFD700" />
                 <Text style={styles.ratingText}>5.0</Text>
+                <Text style={styles.reviewCount}>(32 reviews)</Text>
+              </View>
+              <View style={styles.amenitiesContainer}>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="wifi" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>WiFi</Text>
+                </View>
+                <View style={styles.amenityItem}>
+                  <Ionicons name="fitness" size={12} color="#8E8E93" />
+                  <Text style={styles.amenityText}>Gym</Text>
+                </View>
               </View>
             </View>
           </View>
@@ -193,12 +277,42 @@ export default function HomeScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F8F9FA',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 50,
+    paddingBottom: 20,
     backgroundColor: '#fff',
+  },
+  headerContent: {
+    flex: 1,
+  },
+  greeting: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#1A1A1A',
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#8E8E93',
+    fontWeight: '400',
+  },
+  profileButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchContainer: {
     backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
+    borderBottomColor: '#F0F0F0',
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: {
@@ -206,138 +320,198 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowRadius: 4,
+    elevation: 3,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#f8f8f8',
-    borderRadius: 12,
-    margin: 10,
-    padding: 12,
-    height: 46,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 16,
+    margin: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    height: 50,
   },
   searchIcon: {
-    marginRight: 10,
+    marginRight: 12,
   },
   searchInput: {
     flex: 1,
-    fontSize: 15,
-    color: '#333',
+    fontSize: 16,
+    color: '#1A1A1A',
     height: 40,
+  },
+  filterButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#E3F2FD',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   categoriesWithSearch: {
     marginTop: 0,
   },
   categoriesContainer: {
     backgroundColor: '#fff',
-    paddingVertical: 25,
-    marginTop: 15,
+    paddingVertical: 24,
+    marginTop: 8,
+  },
+  categoriesTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#1A1A1A',
+    marginBottom: 20,
+    paddingHorizontal: 20,
   },
   categories: {
     paddingHorizontal: 20,
   },
   categoryItem: {
     alignItems: 'center',
-    marginRight: 32,
+    marginRight: 24,
   },
   categoryIcon: {
-    width: 65,
-    height: 65,
-    backgroundColor: '#000',
-    borderRadius: 32.5,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  categoryText: {
-    color: '#000',
-    fontSize: 13,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  listings: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  sectionTitle: {
-    fontSize: 22,
-    fontWeight: '800',
-    marginBottom: 20,
-    color: '#000',
-    letterSpacing: 0.3,
-  },
-  listingCard: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    marginBottom: 24,
+    marginBottom: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.08,
+    shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 4,
-    borderWidth: 1,
-    borderColor: '#000',
+  },
+  categoryText: {
+    color: '#1A1A1A',
+    fontSize: 14,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  listings: {
+    flex: 1,
+    paddingHorizontal: 20,
+    backgroundColor: '#F8F9FA',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingTop: 20,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1A1A1A',
+  },
+  seeAllText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#4A90E2',
+  },
+  listingCard: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
+    overflow: 'hidden',
+  },
+  imageContainer: {
+    position: 'relative',
   },
   listingImage: {
     width: '100%',
     height: 200,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+  },
+  priceTag: {
+    position: 'absolute',
+    top: 12,
+    left: 12,
+    backgroundColor: '#4A90E2',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  priceText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  favoriteButton: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   listingDetails: {
     padding: 16,
   },
   listingTitle: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: '700',
-    marginBottom: 6,
-    color: '#000',
-    letterSpacing: 0.2,
+    marginBottom: 8,
+    color: '#1A1A1A',
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   listingLocation: {
-    color: '#666',
-    marginBottom: 10,
+    color: '#8E8E93',
     fontSize: 14,
-    letterSpacing: 0.1,
+    marginLeft: 4,
   },
   listingFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 10,
-  },
-  listingPrice: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#000',
-    letterSpacing: 0.3,
   },
   ratingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#000',
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 20,
   },
   ratingText: {
     marginLeft: 4,
     fontWeight: '600',
-    color: '#fff',
-    fontSize: 13,
+    color: '#1A1A1A',
+    fontSize: 14,
+  },
+  reviewCount: {
+    marginLeft: 4,
+    color: '#8E8E93',
+    fontSize: 12,
+  },
+  amenitiesContainer: {
+    flexDirection: 'row',
+  },
+  amenityItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 12,
+  },
+  amenityText: {
+    marginLeft: 4,
+    color: '#8E8E93',
+    fontSize: 12,
   },
 }); 
