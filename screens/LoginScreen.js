@@ -84,14 +84,15 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <View style={styles.socialContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-google" size={24} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-facebook" size={24} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-apple" size={24} color="#000" />
+            <TouchableOpacity style={styles.googleButton}>
+              <View style={styles.googleLogoContainer}>
+                <Image 
+                  source={{ uri: 'https://developers.google.com/identity/images/g-logo.png' }}
+                  style={styles.googleLogoImage}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={styles.googleButtonText}>Continue with Google</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -245,16 +246,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  socialButton: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#f8f8f8',
-    justifyContent: 'center',
+  googleButton: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 10,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#ddd',
+    width: '100%',
+    maxWidth: 280,
+  },
+  googleLogoContainer: {
+    marginRight: 12,
+  },
+  googleLogoImage: {
+    width: 20,
+    height: 20,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
   },
   registerContainer: {
     flexDirection: 'row',

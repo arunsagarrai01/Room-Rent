@@ -15,14 +15,12 @@ import { useWindowDimensions } from 'react-native';
 
 export default function RegisterScreen({ navigation }) {
   const { width } = useWindowDimensions();
-  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [gender, setGender] = useState('');
-  const [contactNumber, setContactNumber] = useState('');
 
   const handleRegister = () => {
     // TODO: Implement registration logic
@@ -56,10 +54,10 @@ export default function RegisterScreen({ navigation }) {
             <Ionicons name="person-outline" size={24} color="#666" style={styles.inputIcon} />
             <TextInput
               style={styles.input}
-              placeholder="Full Name"
+              placeholder="Username"
               placeholderTextColor="#666"
-              value={name}
-              onChangeText={setName}
+              value={userName}
+              onChangeText={setUserName}
               autoCapitalize="words"
             />
           </View>
@@ -77,81 +75,7 @@ export default function RegisterScreen({ navigation }) {
             />
           </View>
 
-          <View style={styles.inputWrapper}>
-            <Ionicons name="call-outline" size={24} color="#666" style={styles.inputIcon} />
-            <TextInput
-              style={styles.input}
-              placeholder="Contact Number"
-              placeholderTextColor="#666"
-              value={contactNumber}
-              onChangeText={setContactNumber}
-              keyboardType="phone-pad"
-              autoCapitalize="none"
-            />
-          </View>
 
-          <View style={{ marginBottom: 15, paddingLeft: 10, backgroundColor: '#f3f3f3', borderRadius: 10, paddingVertical: 10 }}>
-            <Text style={{ fontSize: 16, color: '#666', marginBottom: 8 }}>Gender</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center', marginRight: 24 }}
-                onPress={() => setGender('male')}
-              >
-                <View style={{
-                  height: 20,
-                  width: 20,
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: gender === 'male' ? '#000' : '#aaa',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 6,
-                  backgroundColor: '#fff',
-                }}>
-                  {gender === 'male' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
-                </View>
-                <Text style={{ color: '#222', fontSize: 15 }}>Male</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center', marginRight: 24 }}
-                onPress={() => setGender('female')}
-              >
-                <View style={{
-                  height: 20,
-                  width: 20,
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: gender === 'female' ? '#000' : '#aaa',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 6,
-                  backgroundColor: '#fff',
-                }}>
-                  {gender === 'female' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
-                </View>
-                <Text style={{ color: '#222', fontSize: 15 }}>Female</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flexDirection: 'row', alignItems: 'center' }}
-                onPress={() => setGender('other')}
-              >
-                <View style={{
-                  height: 20,
-                  width: 20,
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: gender === 'other' ? '#000' : '#aaa',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: 6,
-                  backgroundColor: '#fff',
-                }}>
-                  {gender === 'other' && <View style={{ height: 10, width: 10, borderRadius: 5, backgroundColor: '#000' }} />}
-                </View>
-                <Text style={{ color: '#222', fontSize: 15 }}>Other</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
 
           <View style={styles.inputWrapper}>
             <Ionicons name="lock-closed-outline" size={24} color="#666" style={styles.inputIcon} />
@@ -194,14 +118,15 @@ export default function RegisterScreen({ navigation }) {
           </View>
 
           <View style={styles.socialContainer}>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-google" size={24} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-facebook" size={24} color="#000" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.socialButton}>
-              <Ionicons name="logo-apple" size={24} color="#000" />
+            <TouchableOpacity style={styles.googleButton}>
+              <View style={styles.googleLogoContainer}>
+                <Image 
+                  source={{ uri: 'https://developers.google.com/identity/images/g-logo.png' }}
+                  style={styles.googleLogoImage}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={styles.googleButtonText}>Continue with Google</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -304,16 +229,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  socialButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f8f8f8',
-    justifyContent: 'center',
+  googleButton: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 6,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: '#ddd',
+    width: '100%',
+    maxWidth: 280,
+  },
+  googleLogoContainer: {
+    marginRight: 12,
+  },
+  googleLogoImage: {
+    width: 20,
+    height: 20,
+  },
+  googleButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000',
   },
   loginContainer: {
     flexDirection: 'row',
