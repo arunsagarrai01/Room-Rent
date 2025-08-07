@@ -23,16 +23,7 @@ export default function ProfileScreen({ navigation }) {
     { icon: 'settings-outline', title: 'Settings', screen: 'Settings' },
   ];
 
-  const [editModalVisible, setEditModalVisible] = React.useState(false);
-  const [editName, setEditName] = React.useState(user.name);
-  const [editEmail, setEditEmail] = React.useState(user.email);
-  const [editContact, setEditContact] = React.useState('');
-  const [editPassword, setEditPassword] = React.useState('');
 
-  const handleSaveProfile = () => {
-    // Here you would update the user profile in your backend or state
-    setEditModalVisible(false);
-  };
 
   const handleLogout = () => {
     Alert.alert(
@@ -83,9 +74,9 @@ export default function ProfileScreen({ navigation }) {
               ]}
               onPress={() => {
                 if (item.title === 'Personal Information') {
-                  setEditModalVisible(true);
+                  navigation.navigate('EditProfile');
                 } else {
-                  navigation.navigate(item.screen);
+                  Alert.alert('Coming Soon', `${item.title} feature will be available soon!`);
                 }
               }}
             >
@@ -109,73 +100,7 @@ export default function ProfileScreen({ navigation }) {
         </TouchableOpacity>
       </ScrollView>
 
-      {/* Edit Profile Modal */}
-      {editModalVisible && (
-        <View style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.3)',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 1000,
-        }}>
-          <View style={{
-            backgroundColor: '#fff',
-            borderRadius: 16,
-            padding: 24,
-            width: '85%',
-            elevation: 8,
-            alignItems: 'center',
-          }}>
-            <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#000', marginBottom: 18 }}>Edit Profile</Text>
-            <TextInput
-              style={[styles.input, { marginBottom: 12 }]}
-              placeholder="Full Name"
-              value={editName}
-              onChangeText={setEditName}
-            />
-            <TextInput
-              style={[styles.input, { marginBottom: 12 }]}
-              placeholder="Email"
-              value={editEmail}
-              onChangeText={setEditEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-            <TextInput
-              style={[styles.input, { marginBottom: 12 }]}
-              placeholder="Contact Number"
-              value={editContact}
-              onChangeText={setEditContact}
-              keyboardType="phone-pad"
-            />
-            <TextInput
-              style={[styles.input, { marginBottom: 18 }]}
-              placeholder="Password"
-              value={editPassword}
-              onChangeText={setEditPassword}
-              secureTextEntry
-            />
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-              <TouchableOpacity
-                style={{ flex: 1, backgroundColor: '#000', padding: 12, borderRadius: 8, alignItems: 'center', marginRight: 8 }}
-                onPress={handleSaveProfile}
-              >
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Save</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ flex: 1, backgroundColor: '#eee', padding: 12, borderRadius: 8, alignItems: 'center', marginLeft: 8 }}
-                onPress={() => setEditModalVisible(false)}
-              >
-                <Text style={{ color: '#000', fontWeight: 'bold' }}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
+
     </SafeAreaView>
   );
 }

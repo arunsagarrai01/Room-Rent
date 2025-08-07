@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Image, View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,13 +17,14 @@ import RegisterScreen from './screens/RegisterScreen';
 import LoadingScreen from './screens/LoadingScreen';
 import LandlordDashboard from './screens/LandlordDashboard';
 import LandlordRegisterScreen from './screens/LandlordRegisterScreen';
+import EditProfileScreen from './screens/EditProfileScreen';
+import CategoryListScreen from './screens/CategoryListScreen';
+import NearMeScreen from './screens/NearMeScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function TabNavigator() {
-  const [showSearch, setShowSearch] = React.useState(false);
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -49,14 +50,10 @@ function TabNavigator() {
         tabBarActiveTintColor: '#000',
         tabBarInactiveTintColor: '#000',
         tabBarStyle: {
-          borderTopWidth: 1,
-          borderTopColor: '#000',
           backgroundColor: '#fff',
         },
         headerStyle: {
           backgroundColor: '#fff',
-          borderBottomWidth: 1,
-          borderBottomColor: '#000',
         },
         headerTintColor: '#000',
         headerTitleStyle: {
@@ -68,39 +65,9 @@ function TabNavigator() {
       <Tab.Screen 
         name="Home" 
         component={HomeScreen}
-        options={({ navigation }) => ({
-          headerTitle: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Image
-                source={require('./assets/logo.jpg')}
-                style={{ 
-                  width: 40, 
-                  height: 40, 
-                  borderRadius: 20,
-                  borderWidth: 2,
-                  borderColor: '#000',
-                  backgroundColor: '#fff',
-                  marginLeft: 10,
-                  resizeMode: 'cover'
-                }}
-              />
-            </View>
-          ),
-          headerRight: () => (
-            <TouchableOpacity
-              style={{ marginRight: 15 }}
-              onPress={() => {
-                const newShowSearch = !showSearch;
-                setShowSearch(newShowSearch);
-                navigation.setParams({ showSearch: newShowSearch });
-              }}
-            >
-              <Ionicons name={showSearch ? "close" : "search"} size={24} color="#000" />
-            </TouchableOpacity>
-          ),
-          headerTitleAlign: 'left',
-        })}
-        initialParams={{ showSearch: false }}
+        options={{
+          headerShown: false
+        }}
       />
       <Tab.Screen 
         name="Saved" 
@@ -174,6 +141,27 @@ export default function App() {
           options={{ 
             headerShown: false,
             presentation: 'modal'
+          }}
+        />
+        <Stack.Screen 
+          name="EditProfile" 
+          component={EditProfileScreen}
+          options={{ 
+            headerShown: false
+          }}
+        />
+        <Stack.Screen 
+          name="CategoryList" 
+          component={CategoryListScreen}
+          options={{ 
+            headerShown: false
+          }}
+        />
+        <Stack.Screen 
+          name="NearMe" 
+          component={NearMeScreen}
+          options={{ 
+            headerShown: false
           }}
         />
       </Stack.Navigator>

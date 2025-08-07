@@ -1,42 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, Animated, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, ScrollView, TouchableOpacity, Image, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export default function HomeScreen({ navigation, route }) {
+export default function HomeScreen({ navigation }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchBoxHeight] = useState(new Animated.Value(0));
-  const [isSearchVisible, setIsSearchVisible] = useState(route.params?.showSearch || false);
-
-  useEffect(() => {
-    if (route.params?.showSearch !== undefined) {
-      setIsSearchVisible(route.params.showSearch);
-    }
-  }, [route.params?.showSearch]);
-
-  useEffect(() => {
-    Animated.timing(searchBoxHeight, {
-      toValue: isSearchVisible ? 60 : 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  }, [isSearchVisible]);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
-      {/* Header */}
+      {/* Header with User Profile */}
       <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <Text style={styles.greeting}>Hello, Welcome!</Text>
-          <Text style={styles.subtitle}>Find your perfect room</Text>
+        <View style={styles.profileSection}>
+          <View style={styles.profilePicture}>
+            <Image
+              source={require('../assets/icon.png')}
+              style={styles.profileImage}
+            />
+          </View>
+          <View style={styles.greetingSection}>
+            <Text style={styles.greeting}>Morning, Arun Sagar Rai</Text>
+          </View>
         </View>
-        <TouchableOpacity style={styles.profileButton}>
-          <Ionicons name="person-circle" size={32} color="#4A90E2" />
-        </TouchableOpacity>
       </View>
 
-      <Animated.View style={[styles.searchContainer, { height: searchBoxHeight }]}>
+      {/* Search Bar */}
+      <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <Ionicons name="search" size={20} color="#8E8E93" style={styles.searchIcon} />
           <TextInput 
@@ -50,10 +39,10 @@ export default function HomeScreen({ navigation, route }) {
             <Ionicons name="options" size={20} color="#4A90E2" />
           </TouchableOpacity>
         </View>
-      </Animated.View>
+      </View>
 
       {/* Categories */}
-      <View style={[styles.categoriesContainer, isSearchVisible && styles.categoriesWithSearch]}>
+      <View style={styles.categoriesContainer}>
         <Text style={styles.categoriesTitle}>What are you looking for?</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.categories}>
           <TouchableOpacity 
@@ -281,57 +270,64 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingTop: 50,
     paddingBottom: 20,
     backgroundColor: '#fff',
   },
-  headerContent: {
+  profileSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  profilePicture: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+    overflow: 'hidden',
+  },
+  profileImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 25,
+  },
+  greetingSection: {
     flex: 1,
   },
   greeting: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: '600',
     color: '#1A1A1A',
-    marginBottom: 4,
   },
-  subtitle: {
-    fontSize: 16,
-    color: '#8E8E93',
-    fontWeight: '400',
-  },
-  profileButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   searchContainer: {
     backgroundColor: '#fff',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 3,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#F8F9FA',
     borderRadius: 16,
-    margin: 16,
     paddingHorizontal: 16,
     paddingVertical: 12,
     height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   searchIcon: {
     marginRight: 12,
@@ -349,9 +345,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#E3F2FD',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  categoriesWithSearch: {
-    marginTop: 0,
   },
   categoriesContainer: {
     backgroundColor: '#fff',
